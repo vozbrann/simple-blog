@@ -1,31 +1,32 @@
-// import App from "next/app";
 import { AppProps } from 'next/app'
-
+import { wrapper } from '../store/configureStore'
+import Head from 'next/head'
 import { ThemeProvider } from 'styled-components'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import { createGlobalStyle } from 'styled-components'
 
-const theme = {
-  colors: {},
-}
+import '../BootstrapCustom.scss'
 
-function MyApp({ Component, pageProps }: AppProps) {
+const theme = {}
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    
+  }
+`
+
+const MyApp: React.FC<AppProps> = ({ Component, pageProps }: AppProps) => {
   return (
     <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <Head>
+        <link
+          href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+          rel="stylesheet"
+        />
+      </Head>
       <Component {...pageProps} />
     </ThemeProvider>
   )
 }
 
-// Only uncomment this method if you have blocking data requirements for
-// every single page in your application. This disables the ability to
-// perform automatic static optimization, causing every page in your app to
-// be server-side rendered.
-//
-// MyApp.getInitialProps = async (appContext: AppContext) => {
-//   // calls page's `getInitialProps` and fills `appProps.pageProps`
-//   const appProps = await App.getInitialProps(appContext);
-
-//   return { ...appProps }
-// }
-
-export default MyApp
+export default wrapper.withRedux(MyApp)
